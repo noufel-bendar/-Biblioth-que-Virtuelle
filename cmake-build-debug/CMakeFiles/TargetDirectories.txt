@@ -1,0 +1,3 @@
+C:/Users/iftra/CLionProjects/projet-algo/cmake-build-debug/CMakeFiles/projet_algo.dir
+C:/Users/iftra/CLionProjects/projet-algo/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/iftra/CLionProjects/projet-algo/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -39,3 +39,40 @@ typedef struct loan_history{
     char date[10];
     struct loan_history* next;
 }loan_history;
+
+// need this shit to clear the input buffer or else scanf will skip lines
+
+void clear_input_buffer(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+// book functions
+
+book* search_book(book* b, char title[], char author[]){
+    book* temp=b;
+
+    while(temp!=NULL && !(strcmp(temp->title, title)==0 && strcmp(temp->author, author)==0)){
+        temp=temp->next;
+    }
+
+    if(temp==NULL){
+        printf("The book %s by %s was not found.\n", title, author);
+    }
+
+    return temp;
+};
+
+book* add_book(book* b, char title[], char author[]){
+
+    book* temp=malloc(sizeof(book));
+    strcpy(temp->title, title);
+    strcpy(temp->author, author);
+    temp->available=true;
+    temp->l.head=NULL;
+    temp->l.tail=NULL;
+    temp->next=b;
+    b=temp;
+    
+    return b;
+};

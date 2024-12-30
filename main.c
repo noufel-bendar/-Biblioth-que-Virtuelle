@@ -76,3 +76,24 @@ book* add_book(book* b, char title[], char author[]){
     
     return b;
 };
+
+loan_history* add_history(loan_history** h, book* b, person* p){
+    loan_history* temp=malloc(sizeof(loan_history));
+
+    char date[10];
+
+    printf("Please enter a date in the DD/MM/YYYY format: \n");
+    scanf("%10s", date);
+
+    clear_input_buffer();
+
+    strcpy(temp->name, p->name);
+    strcpy(temp->address, p->address);
+    strcpy(temp->title, b->title);
+    strcpy(temp->author, b->author);
+    strcpy(temp->date, date);
+    temp->phone_number=p->phone_number;
+
+    temp->next=(*h);
+    (*h)=temp;
+};

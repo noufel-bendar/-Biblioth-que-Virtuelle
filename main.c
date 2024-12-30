@@ -93,7 +93,6 @@ loan_history* add_history(loan_history** h, book* b, person* p){
     strcpy(temp->author, b->author);
     strcpy(temp->date, date);
     temp->phone_number=p->phone_number;
-
     temp->next=(*h);
     (*h)=temp;
 };

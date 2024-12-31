@@ -10,6 +10,8 @@ struct book;
 struct queue;
 struct loan_history;
 
+
+
 typedef struct person{
     char name[30];
     char address[30];
@@ -95,4 +97,29 @@ loan_history* add_history(loan_history** h, book* b, person* p){
     temp->phone_number=p->phone_number;
     temp->next=(*h);
     (*h)=temp;
+};
+void free_queue(queue* q){
+    person* p;
+
+    while(q->head!=NULL){
+        p=q->head;
+
+        q->head=q->head->next;
+
+        free(p);
+    }
+
+    q->tail=NULL;
+}
+
+void display_queue(queue* q){
+    person* temp=q->head;
+
+    while(temp!=NULL){
+        display_person(temp);
+
+        temp=temp->next;
+    }
+
+    printf("\n");
 };

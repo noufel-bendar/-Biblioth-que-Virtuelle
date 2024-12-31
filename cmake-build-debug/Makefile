@@ -56,10 +56,10 @@ RM = "C:\Program Files\JetBrains\CLion 2024.3.1.1\bin\cmake\win\x64\bin\cmake.ex
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "C:\Users\acer\OneDrive\Bureau\algo project\-Bibliothque-Virtuelle"
+CMAKE_SOURCE_DIR = "C:\Users\pc\Desktop\bilioteque virtuelle\-Bibliothque-Virtuelle"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "C:\Users\acer\OneDrive\Bureau\algo project\-Bibliothque-Virtuelle\cmake-build-debug"
+CMAKE_BINARY_DIR = "C:\Users\pc\Desktop\bilioteque virtuelle\-Bibliothque-Virtuelle\cmake-build-debug"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\acer\OneDrive\Bureau\algo project\-Bibliothque-Virtuelle\cmake-build-debug\CMakeFiles" "C:\Users\acer\OneDrive\Bureau\algo project\-Bibliothque-Virtuelle\cmake-build-debug\\CMakeFiles\progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\pc\Desktop\bilioteque virtuelle\-Bibliothque-Virtuelle\cmake-build-debug\CMakeFiles" "C:\Users\pc\Desktop\bilioteque virtuelle\-Bibliothque-Virtuelle\cmake-build-debug\\CMakeFiles\progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\acer\OneDrive\Bureau\algo project\-Bibliothque-Virtuelle\cmake-build-debug\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\pc\Desktop\bilioteque virtuelle\-Bibliothque-Virtuelle\cmake-build-debug\CMakeFiles" 0
 .PHONY : all
 
 # The main clean target

@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/acer/OneDrive/Bureau/algo project/-Bibliothque-Virtuelle/cmake-build-debug"
+			"value" : "c:/Users/pc/Desktop/bilioteque virtuelle/-Bibliothque-Virtuelle/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -415,7 +415,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/acer/OneDrive/Bureau/algo project/-Bibliothque-Virtuelle/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/pc/Desktop/bilioteque virtuelle/-Bibliothque-Virtuelle/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -487,7 +487,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/acer/OneDrive/Bureau/algo project/-Bibliothque-Virtuelle"
+			"value" : "C:/Users/pc/Desktop/bilioteque virtuelle/-Bibliothque-Virtuelle"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1135,7 +1135,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/acer/OneDrive/Bureau/algo project/-Bibliothque-Virtuelle/cmake-build-debug"
+			"value" : "C:/Users/pc/Desktop/bilioteque virtuelle/-Bibliothque-Virtuelle/cmake-build-debug"
 		},
 		{
 			"name" : "projet_algo_IS_TOP_LEVEL",
@@ -1159,7 +1159,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/acer/OneDrive/Bureau/algo project/-Bibliothque-Virtuelle"
+			"value" : "C:/Users/pc/Desktop/bilioteque virtuelle/-Bibliothque-Virtuelle"
 		}
 	],
 	"kind" : "cache",

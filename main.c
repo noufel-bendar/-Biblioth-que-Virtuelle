@@ -49,6 +49,56 @@ void clear_input_buffer(){
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+// history functions
+
+loan_history* add_history(loan_history** h, book* b, person* p){
+    loan_history* temp=malloc(sizeof(loan_history));
+
+    char date[10];
+
+    printf("Please enter a date in the DD/MM/YYYY format: \n");
+    scanf("%10s", date);
+
+    clear_input_buffer();
+
+    strcpy(temp->name, p->name);
+    strcpy(temp->address, p->address);
+    strcpy(temp->title, b->title);
+    strcpy(temp->author, b->author);
+    strcpy(temp->date, date);
+    temp->phone_number=p->phone_number;
+    temp->next=(*h);
+    (*h)=temp;
+};//no need to use double pointers here since you are returning the pointer
+
+// queue functions
+
+void free_queue(queue* q){
+    person* p;
+
+    while(q->head!=NULL){
+        p=q->head;
+
+        q->head=q->head->next;
+
+        free(p);
+    }
+
+    q->tail=NULL;
+}
+
+void display_queue(queue* q){
+    person* temp=q->head;
+
+    while(temp!=NULL){
+        display_person(temp);
+
+        temp=temp->next;
+    }
+
+    printf("\n");
+};
+
 // book functions
 
 book* search_book(book* b, char title[], char author[]){
@@ -79,47 +129,27 @@ book* add_book(book* b, char title[], char author[]){
     return b;
 };
 
-loan_history* add_history(loan_history** h, book* b, person* p){
-    loan_history* temp=malloc(sizeof(loan_history));
+book* delete_book(book* b, char title[], char author[]){
+    book* temp=search_book(b, title, author);
 
-    char date[10];
+    if(temp!=NULL){
+        if(temp==b){
+            b=b->next;
+            free_queue(&temp->l);
+            free(temp);
+        }
+        else{
+            book* temp2=b;
 
-    printf("Please enter a date in the DD/MM/YYYY format: \n");
-    scanf("%10s", date);
+            while(temp2->next!=temp){
+                temp2=temp2->next;
+            }
 
-    clear_input_buffer();
-
-    strcpy(temp->name, p->name);
-    strcpy(temp->address, p->address);
-    strcpy(temp->title, b->title);
-    strcpy(temp->author, b->author);
-    strcpy(temp->date, date);
-    temp->phone_number=p->phone_number;
-    temp->next=(*h);
-    (*h)=temp;
-};
-void free_queue(queue* q){
-    person* p;
-
-    while(q->head!=NULL){
-        p=q->head;
-
-        q->head=q->head->next;
-
-        free(p);
+            temp2->next=temp->next;
+            free_queue(&temp->l);
+            free(temp);
+        }
     }
 
-    q->tail=NULL;
-}
-
-void display_queue(queue* q){
-    person* temp=q->head;
-
-    while(temp!=NULL){
-        display_person(temp);
-
-        temp=temp->next;
-    }
-
-    printf("\n");
+    return b;
 };

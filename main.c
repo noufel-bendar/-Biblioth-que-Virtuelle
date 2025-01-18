@@ -153,3 +153,68 @@ book* delete_book(book* b, char title[], char author[]){
 
     return b;
 };
+
+book* loan_book(loan_history** h, book* b, char name[], char address[], int phone, char title[], char author[]){
+    book* temp=search_book(b, title, author);
+    person* p=malloc(sizeof(person));
+
+    strcpy(p->name, name);
+    strcpy(p->address, address);
+    p->phone_number=phone;
+    p->next=NULL;
+
+    if(temp!=NULL){
+        if(temp->l.head!=NULL){
+            if(compare_person(temp->l.head, p)){
+                if(temp->available==true){
+                    temp->available=false;
+                    dequeue(temp, &(*h));
+                }
+                else{
+                    printf("Wait for the book to be returned.\n");
+                }
+            }
+            else{
+                if(in_queue(&temp->l, p)){
+                    printf("Please wait for your turn.\n");
+                }
+                else{
+                    printf("You have been added to the queue, please wait for your turn.\n");
+                    enqueue(&temp->l, name, address, phone);
+                }
+            }
+        }
+        else{
+            if(temp->available==true){
+                temp->available=false;
+                add_history(&(*h), temp, p);
+            }
+            else{
+                printf("The book is unavailable, please wait for your turn.\n");
+                enqueue(&temp->l, name, address, phone);
+                
+            }
+        }
+    }
+    else{
+        printf("The book does not exist.\n");
+    }
+
+    free(p);
+
+    return b;
+};
+
+book* return_book(book* b, char title[], char author[]){
+    book* temp=search_book(b, title, author);
+
+    if(temp!=NULL && temp->available==false){
+        temp->available=true;
+        printf("Thanks for returning the book.\n");
+    }
+    else if(temp!=NULL && temp->available==true){
+        printf("The book is already in the library, are you sure you are at the right library?\n");
+    }
+
+    return b;
+};

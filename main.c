@@ -218,3 +218,8 @@ book* return_book(book* b, char title[], char author[]){
 
     return b;
 };
+
+void display_book(book* b){
+    printf("Book:\n-Title: %s\n-Author: %s\n-Avalable: %d\n=Queue=\n", b->title, b->author, b->available);
+    display_queue(&b->l);
+};

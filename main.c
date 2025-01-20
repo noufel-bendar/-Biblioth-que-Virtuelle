@@ -222,4 +222,4 @@ book* return_book(book* b, char title[], char author[]){
 void display_book(book* b){
     printf("Book:\n-Title: %s\n-Author: %s\n-Avalable: %d\n=Queue=\n", b->title, b->author, b->available);
     display_queue(&b->l);
-};
+};// this function will be used to display the whole library

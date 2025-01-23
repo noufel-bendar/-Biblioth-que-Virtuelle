@@ -267,3 +267,15 @@ void display_library(book* b){
 
     printf("\n");
 };// need the rest to be done so i can make the main function
+
+bool compare_person(person* p, person* t){
+    if(strcmp(p->name, t->name)==0 && strcmp(p->address, t->address)==0 && p->phone_number==t->phone_number){
+        return true;
+    }
+
+
+};
+
+void display_person(person* p){
+    printf("Person:\n-Name: %s\n-Adress: %s\n-Phone Number: %d\n\n", p->name, p->address, p->phone_number);
+};

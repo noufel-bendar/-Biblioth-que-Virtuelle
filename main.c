@@ -71,6 +71,38 @@ loan_history* add_history(loan_history** h, book* b, person* p){
     (*h)=temp;
 };//no need to use double pointers here since you are returning the pointer
 
+void display_history(loan_history* h){
+    printf("Peron Info:\n-Name: %s\n-Address: %s\n-Phone Number: %d\nBook Info:\n-Title: %s\n-Author: %s\nLoan Date: %s\n\n", h->name, h->address, h->phone_number, h->title, h->author, h->date);
+};
+
+void search_book_in_history(loan_history* h, book* b){
+    loan_history* temp=h;
+
+    while(temp!=NULL && !(strcmp(temp->title, b->title)==0 && strcmp(temp->author, b->author)==0)){
+        temp=temp->next;
+    }
+
+    if(temp==NULL){
+        printf("The book was not found in the history.\n");
+    }
+    else{
+        printf("The book was found.\n");
+        display_history(temp);
+    }
+};
+
+void display_all_history(loan_history* h){
+    loan_history* temp=h;
+
+    while(temp!=NULL){
+        display_history(temp);
+
+        temp=temp->next;
+    }
+
+    printf("\n");
+};
+
 // queue functions
 
 void free_queue(queue* q){
@@ -223,34 +255,15 @@ void display_book(book* b){
     printf("Book:\n-Title: %s\n-Author: %s\n-Avalable: %d\n=Queue=\n", b->title, b->author, b->available);
     display_queue(&b->l);
 };// this function will be used to display the whole library
-void display_history(loan_history* h){
-    printf("Peron Info:\n-Name: %s\n-Address: %s\n-Phone Number: %d\nBook Info:\n-Title: %s\n-Author: %s\nLoan Date: %s\n\n", h->name, h->address, h->phone_number, h->title, h->author, h->date);
-};
 
-void search_book_in_history(loan_history* h, book* b){
-    loan_history* temp=h;
-
-    while(temp!=NULL && !(strcmp(temp->title, b->title)==0 && strcmp(temp->author, b->author)==0)){
-        temp=temp->next;
-    }
-
-    if(temp==NULL){
-        printf("The book was not found in the history.\n");
-    }
-    else{
-        printf("The book was found.\n");
-        display_history(temp);
-    }
-};
-
-void display_all_history(loan_history* h){
-    loan_history* temp=h;
+void display_library(book* b){
+    book* temp=b;
 
     while(temp!=NULL){
-        display_history(temp);
+        display_book(temp);
 
         temp=temp->next;
     }
 
     printf("\n");
-};
+};// need the rest to be done so i can make the main function

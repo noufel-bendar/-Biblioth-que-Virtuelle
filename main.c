@@ -273,7 +273,7 @@ bool compare_person(person* p, person* t){
         return true;
     }
 
-
+    return false;
 };
 
 void display_person(person* p){

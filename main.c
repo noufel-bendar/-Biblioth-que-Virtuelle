@@ -279,3 +279,57 @@ bool compare_person(person* p, person* t){
 void display_person(person* p){
     printf("Person:\n-Name: %s\n-Adress: %s\n-Phone Number: %d\n\n", p->name, p->address, p->phone_number);
 };
+bool in_queue(queue* q, person* p){
+    person* temp=q->head->next;
+
+    while(temp!=NULL && !compare_person(temp, p)){
+        temp=temp->next;
+    }
+
+    if(temp==NULL){
+        return false;
+    }
+
+    return true;
+};
+
+void enqueue(queue* q, char name[], char address[], int phone){
+    person* p=malloc(sizeof(person));
+
+    strcpy(p->name, name);
+    strcpy(p->address, address);
+    p->phone_number=phone;
+    p->next=NULL;
+
+    if(q->tail==NULL){
+        q->tail=p;
+        q->head=p;
+    }
+    else{
+        q->tail->next=p;
+        q->tail=q->tail->next;
+    }
+};
+
+book* dequeue(book* b, loan_history** h){
+    if(b->l.head==NULL){
+        printf("The queue is already empty.\n");
+        return b;
+    }
+
+    add_history(&(*h), b, b->l.head);
+
+    person* temp=b->l.head;
+
+    if(b->l.head==b->l.tail){
+        b->l.head=NULL;
+        b->l.tail=NULL;
+    }
+    else{
+        b->l.head=b->l.head->next;
+    }
+
+    free(temp);
+
+    return b;
+};

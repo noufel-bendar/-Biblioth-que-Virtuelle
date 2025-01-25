@@ -10,8 +10,6 @@ struct book;
 struct queue;
 struct loan_history;
 
-
-
 typedef struct person{
     char name[30];
     char address[30];
@@ -48,6 +46,20 @@ void clear_input_buffer(){
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+
+// person functions
+
+bool compare_person(person* p, person* t){
+    if(strcmp(p->name, t->name)==0 && strcmp(p->address, t->address)==0 && p->phone_number==t->phone_number){
+        return true;
+    }
+
+    return false;
+};
+
+void display_person(person* p){
+    printf("Person:\n-Name: %s\n-Adress: %s\n-Phone Number: %d\n\n", p->name, p->address, p->phone_number);
+};
 
 // history functions
 
@@ -104,6 +116,61 @@ void display_all_history(loan_history* h){
 };
 
 // queue functions
+
+bool in_queue(queue* q, person* p){
+    person* temp=q->head->next;
+
+    while(temp!=NULL && !compare_person(temp, p)){
+        temp=temp->next;
+    }
+
+    if(temp==NULL){
+        return false;
+    }
+
+    return true;
+};
+
+void enqueue(queue* q, char name[], char address[], int phone){
+    person* p=malloc(sizeof(person));
+
+    strcpy(p->name, name);
+    strcpy(p->address, address);
+    p->phone_number=phone;
+    p->next=NULL;
+
+    if(q->tail==NULL){
+        q->tail=p;
+        q->head=p;
+    }
+    else{
+        q->tail->next=p;
+        q->tail=q->tail->next;
+    }
+};
+
+book* dequeue(book* b, loan_history** h){
+    if(b->l.head==NULL){
+        printf("The queue is already empty.\n");
+        return b;
+    }
+
+    add_history(&(*h), b, b->l.head);
+
+    person* temp=b->l.head;
+
+    if(b->l.head==b->l.tail){
+        b->l.head=NULL;
+        b->l.tail=NULL;
+    }
+    else{
+        b->l.head=b->l.head->next;
+    }
+
+    free(temp);
+
+    return b;
+};
 
 void free_queue(queue* q){
     person* p;
@@ -268,68 +335,161 @@ void display_library(book* b){
     printf("\n");
 };// need the rest to be done so i can make the main function
 
-bool compare_person(person* p, person* t){
-    if(strcmp(p->name, t->name)==0 && strcmp(p->address, t->address)==0 && p->phone_number==t->phone_number){
-        return true;
+book* start(book* b, loan_history** h){
+    char titles[10][30]={"Jojo's Bizarre Adventures", "One Piece", "Sweet Home", "Dog Nigga", "One Punch Man", "Oshi No Ko", "Lookism", "Kaguya-Sama Love Is War", "Wind Breaker", "Wind Breaker"};
+    char authors[10][30]={"Araki", "Oda", "Kim Carnby", "DH Animations", "One", "Aka", "PTJ", "Aka", "Jo Yongseuk", "Nii Satoru"};
+
+    char names[10][30]={"Alice Smith", "Bob Johnson", "Charlie Brown", "Daisy White", "Eve Black", "Frank Green", "Grace Blue", "Henry Red", "Ivy Yellow", "Jack Orange"};
+    char addresses[10][30]={"123 Main St", "456 Elm St", "789 Oak St", "101 Pine St", "202 Maple St", "303 Cedar St", "404 Walnut St", "505 Birch St", "606 Spruce St", "707 Ash St"};
+    int phone_numbers[10]={55512347, 98765432, 12347890, 87632109, 23456901, 89234567, 47890123, 76543098, 21076543, 67890145};
+
+    book* temp;
+
+    for(int i=0; i<10; i++){
+        b=add_book(b, titles[i], authors[i]);
     }
 
-    return false;
-};
+    temp=search_book(b, "Dog Nigga", "DH Animations");
+    temp->available=false;
+    temp=search_book(b, "Jojo's Bizarre Adventures", "Araki");
+    temp->available=false;
 
-void display_person(person* p){
-    printf("Person:\n-Name: %s\n-Adress: %s\n-Phone Number: %d\n\n", p->name, p->address, p->phone_number);
-};
-bool in_queue(queue* q, person* p){
-    person* temp=q->head->next;
-
-    while(temp!=NULL && !compare_person(temp, p)){
-        temp=temp->next;
+    for(int i=0; i<5; i++){
+        b=loan_book(&(*h), b, names[i], addresses[i], phone_numbers[i], "Dog Nigga", "DH Animations");
+        b=loan_book(&(*h), b, names[i], addresses[5+i], phone_numbers[5+i], "Jojo's Bizarre Adventures", "Araki");
     }
-
-    if(temp==NULL){
-        return false;
-    }
-
-    return true;
-};
-
-void enqueue(queue* q, char name[], char address[], int phone){
-    person* p=malloc(sizeof(person));
-
-    strcpy(p->name, name);
-    strcpy(p->address, address);
-    p->phone_number=phone;
-    p->next=NULL;
-
-    if(q->tail==NULL){
-        q->tail=p;
-        q->head=p;
-    }
-    else{
-        q->tail->next=p;
-        q->tail=q->tail->next;
-    }
-};
-
-book* dequeue(book* b, loan_history** h){
-    if(b->l.head==NULL){
-        printf("The queue is already empty.\n");
-        return b;
-    }
-
-    add_history(&(*h), b, b->l.head);
-
-    person* temp=b->l.head;
-
-    if(b->l.head==b->l.tail){
-        b->l.head=NULL;
-        b->l.tail=NULL;
-    }
-    else{
-        b->l.head=b->l.head->next;
-    }
-
-    free(temp);
 
     return b;
 };
+
+int main(){
+    book* b=NULL;
+    book* temp_book=NULL;
+    loan_history* h=NULL;
+
+    b=start(b, &h);
+
+    int key=-1;
+
+    char temp1[30], temp2[30], temp3[30], temp4[30];
+    int x;
+
+    while(key!=0){
+
+        printf("Commands: \n-0: close.\n-1: add a book.\n-2: remove a book.\n-3: loan a book.\n-4: return a book.\n-5: search for a book.\n-6: last borrower of a book.\n-7: list of all books with their queues.\n-8: display history.\n");
+        scanf("%d", &key);
+
+        switch (key)
+        {
+
+        case 0:
+
+            break;
+
+        case 1:
+
+            printf("Please enter title and author of the book you want to add.\n");
+            scanf(" %30[^\n]", temp1);
+            clear_input_buffer();
+            scanf(" %30[^\n]", temp2);
+            clear_input_buffer();
+
+            b=add_book(b, temp1, temp2);
+            
+            break;
+
+        case 2:
+
+            printf("Please enter title and author of the book you want to remove.\n");
+            scanf(" %30[^\n]", temp1);
+            clear_input_buffer();
+            scanf(" %30[^\n]", temp2);
+            clear_input_buffer();
+
+            b=delete_book(b, temp1, temp2);
+            
+            break;
+
+        case 3:
+
+            printf("Please enter title and author of the book you want to borrow.\n");
+            scanf(" %30[^\n]", temp1);
+            clear_input_buffer();
+            scanf(" %30[^\n]", temp2);
+            clear_input_buffer();
+
+            printf("Please enter the name, address and the phone number of the person who wants to borrw the book.\n");
+            scanf(" %30[^\n]", temp3);
+            clear_input_buffer();
+            scanf(" %30[^\n]", temp4);
+            clear_input_buffer();
+            scanf("%d", &x);
+
+            b=loan_book(&h, b, temp3, temp4, x, temp1, temp2);
+            
+            break;
+
+        case 4:
+
+            printf("Please enter title and author of the book you want to return.\n");
+            scanf(" %30[^\n]", temp1);
+            clear_input_buffer();
+            scanf(" %30[^\n]", temp2);
+            clear_input_buffer();
+
+            b=return_book(b, temp1, temp2);
+            
+            break;
+
+        case 5:
+
+            printf("Please enter title and author of the book you want to search for.\n");
+            scanf(" %30[^\n]", temp1);
+            clear_input_buffer();
+            scanf(" %30[^\n]", temp2);
+            clear_input_buffer();
+
+            temp_book=search_book(b, temp1, temp2);
+
+            if(temp_book!=NULL){
+                display_book(temp_book);
+            }
+            
+            break;
+
+        case 6:
+
+            printf("Please enter title and author of the book you want to check history of.\n");
+            scanf(" %30[^\n]", temp1);
+            clear_input_buffer();
+            scanf(" %30[^\n]", temp2);
+            clear_input_buffer();
+
+            temp_book=search_book(b, temp1, temp2);
+
+            if(temp_book!=NULL){
+                search_book_in_history(h, temp_book);
+            }
+            
+            break;
+
+        case 7:
+
+            display_library(b);
+            
+            break;
+
+        case 8:
+
+            display_all_history(h);
+            
+            break;
+        
+        default:
+            printf("Invalid command.\n");
+            break;
+        }
+    }
+
+    return 0;
+}

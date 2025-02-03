@@ -362,14 +362,18 @@ book* start(book* b, loan_history** h){
         b=add_book(b, titles[i], authors[i]);
     }
 
-    temp=search_book(b, "Dog Nigga", "DH Animations");
-    temp->available=false;
-    temp=search_book(b, "Jojo's Bizarre Adventures", "Araki");
-    temp->available=false;
+    date today1;
+    today1.d = 4;
+    today1.m = 2;
+    today1.y = 2025;
+    date today2;
+    today2.d = 31;
+    today2.m = 1;
+    today2.y= 2025;
 
     for(int i=0; i<5; i++){
-        b=loan_book(&(*h), b, names[i], addresses[i], phone_numbers[i], "Dog Nigga", "DH Animations");
-        b=loan_book(&(*h), b, names[i], addresses[5+i], phone_numbers[5+i], "Jojo's Bizarre Adventures", "Araki");
+        b=loan_book(&(*h), b, names[i], addresses[i], phone_numbers[i], "Dog Nigga", "DH Animations", today1);
+        b=loan_book(&(*h), b, names[i], addresses[5+i], phone_numbers[5+i], "Jojo's Bizarre Adventures", "Araki", today2);
     }
 
     return b;
@@ -385,6 +389,7 @@ int main(){
     int key=-1;
 
     char temp1[30], temp2[30], temp3[30], temp4[30];
+    date today;
     int x;
 
     while(key!=0){
@@ -410,7 +415,7 @@ int main(){
             clear_input_buffer();
 
             b=add_book(b, temp1, temp2);
-            
+
             break;
 
         case 2:
@@ -424,7 +429,7 @@ int main(){
             clear_input_buffer();
 
             b=delete_book(b, temp1, temp2);
-            
+
             break;
 
         case 3:
@@ -447,8 +452,19 @@ int main(){
             printf("phone number: ");
             scanf("%d", &x);
 
-            b=loan_book(&h, b, temp3, temp4, x, temp1, temp2);
-            
+            printf("Please enter a date in the DD/MM/YYYY format: \n");
+            printf("day: ");
+            scanf("%d", &today.d);
+            clear_input_buffer();
+            printf("month: ");
+            scanf("%d", &today.m);
+            clear_input_buffer();
+            printf("year: ");
+            scanf("%d", &today.y);
+            clear_input_buffer();
+
+            b=loan_book(&h, b, temp3, temp4, x, temp1, temp2, today);
+
             break;
 
         case 4:
@@ -462,7 +478,7 @@ int main(){
             clear_input_buffer();
 
             b=return_book(b, temp1, temp2);
-            
+
             break;
 
         case 5:
@@ -480,7 +496,7 @@ int main(){
             if(temp_book!=NULL){
                 display_book(temp_book);
             }
-            
+
             break;
 
         case 6:
@@ -498,7 +514,7 @@ int main(){
             if(temp_book!=NULL){
                 search_book_in_history(h, temp_book);
             }
-            
+
             break;
 
         case 7:

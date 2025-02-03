@@ -389,8 +389,10 @@ int main(){
         case 1:
 
             printf("Please enter title and author of the book you want to add.\n");
+            printf("title: ");
             scanf(" %30[^\n]", temp1);
             clear_input_buffer();
+            printf("author: ");
             scanf(" %30[^\n]", temp2);
             clear_input_buffer();
 
@@ -401,8 +403,10 @@ int main(){
         case 2:
 
             printf("Please enter title and author of the book you want to remove.\n");
+            printf("title: ");
             scanf(" %30[^\n]", temp1);
             clear_input_buffer();
+            printf("author: ");
             scanf(" %30[^\n]", temp2);
             clear_input_buffer();
 
@@ -413,16 +417,21 @@ int main(){
         case 3:
 
             printf("Please enter title and author of the book you want to borrow.\n");
+            printf("title: ");
             scanf(" %30[^\n]", temp1);
             clear_input_buffer();
+            printf("author: ");
             scanf(" %30[^\n]", temp2);
             clear_input_buffer();
 
             printf("Please enter the name, address and the phone number of the person who wants to borrw the book.\n");
+            printf("name: ");
             scanf(" %30[^\n]", temp3);
             clear_input_buffer();
+            printf("address: ");
             scanf(" %30[^\n]", temp4);
             clear_input_buffer();
+            printf("phone number: ");
             scanf("%d", &x);
 
             b=loan_book(&h, b, temp3, temp4, x, temp1, temp2);
@@ -432,8 +441,10 @@ int main(){
         case 4:
 
             printf("Please enter title and author of the book you want to return.\n");
+            printf("title: ");
             scanf(" %30[^\n]", temp1);
             clear_input_buffer();
+            printf("author: ");
             scanf(" %30[^\n]", temp2);
             clear_input_buffer();
 
@@ -444,8 +455,10 @@ int main(){
         case 5:
 
             printf("Please enter title and author of the book you want to search for.\n");
+            printf("title: ");
             scanf(" %30[^\n]", temp1);
             clear_input_buffer();
+            printf("author: ");
             scanf(" %30[^\n]", temp2);
             clear_input_buffer();
 
@@ -460,8 +473,10 @@ int main(){
         case 6:
 
             printf("Please enter title and author of the book you want to check history of.\n");
+            printf("title: ");
             scanf(" %30[^\n]", temp1);
             clear_input_buffer();
+            printf("author: ");
             scanf(" %30[^\n]", temp2);
             clear_input_buffer();
 

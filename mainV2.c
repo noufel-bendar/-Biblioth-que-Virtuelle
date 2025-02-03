@@ -9,6 +9,11 @@ struct person;
 struct book;
 struct queue;
 struct loan_history;
+struct date;
+
+typedef struct date{
+    int  d, m, y;
+}date;
 
 typedef struct person{
     char name[30];
@@ -37,9 +42,22 @@ typedef struct loan_history{
     int phone_number;
     char title[30];
     char author[30];
-    char date[10];
+    struct date today;
     struct loan_history* next;
 }loan_history;
+// date fucntions
+
+struct date setdate(struct date today, int d, int m, int y){
+    today.d = d;
+    today.m = m;
+    today.y = y;
+
+    return today;
+};
+
+void display_date(struct date today){
+    printf("%d/%d/%d\n\n", today.d, today.m, today.y);
+};
 
 void clear_input_buffer(){
     int c;
@@ -49,29 +67,22 @@ void clear_input_buffer(){
 //history functions
 
 void display_history(loan_history* h){
-    printf("Peron Info:\n-Name: %s\n-Address: %s\n-Phone Number: %d\nBook Info:\n-Title: %s\n-Author: %s\nLoan Date: %s\n\n", h->name, h->address, h->phone_number, h->title, h->author, h->date);
+    printf("Peron Info:\n-Name: %s\n-Address: %s\n-Phone Number: %d\nBook Info:\n-Title: %s\n-Author: %s\n", h->name, h->address, h->phone_number, h->title, h->author);
+    display_date(h->today);
 };
 
-loan_history* add_history(loan_history** h, book* b, person* p){
+loan_history* add_history(loan_history** h, book* b, person* p, date today){
     loan_history* temp=malloc(sizeof(loan_history));
-
-    char date[10];
-
-    printf("Please enter a date in the DD/MM/YYYY format: \n");
-    scanf("%10s", date);
-
-    clear_input_buffer();
 
     strcpy(temp->name, p->name);
     strcpy(temp->address, p->address);
     strcpy(temp->title, b->title);
     strcpy(temp->author, b->author);
-    strcpy(temp->date, date);
     temp->phone_number=p->phone_number;
-
+    temp->today = today;
     temp->next=(*h);
     (*h)=temp;
-};
+};//no need to use double pointers here since you are returning the pointer
 
 void search_book_in_history(loan_history* h, book* b){
     loan_history* temp=h;
@@ -149,13 +160,13 @@ void enqueue(queue* q, char name[], char address[], int phone){
     }
 };
 
-book* dequeue(book* b, loan_history** h){
+book* dequeue(book* b, loan_history** h, date today){
     if(b->l.head==NULL){
         printf("The queue is already empty.\n");
         return b;
     }
 
-    add_history(&(*h), b, b->l.head);
+    add_history(&(*h), b, b->l.head, today);
 
     person* temp=b->l.head;
 
@@ -171,7 +182,6 @@ book* dequeue(book* b, loan_history** h){
 
     return b;
 };
-
 void free_queue(queue* q){
     person* p;
 
@@ -297,7 +307,7 @@ book* delete_book(book* b, char title[], char author[]){
     }
 };
 
-book* loan_book(loan_history** h, book* b, char name[], char address[], int phone, char title[], char author[]){
+book* loan_book(loan_history** h, book* b, char name[], char address[], int phone, char title[], char author[], date today){
     book* temp=search_book(b, title, author);
     person* p=malloc(sizeof(person));
 
@@ -311,7 +321,7 @@ book* loan_book(loan_history** h, book* b, char name[], char address[], int phon
             if(compare_person(temp->l.head, p)){
                 if(temp->available==true){
                     temp->available=false;
-                    dequeue(temp, &(*h));
+                    dequeue(temp, &(*h), today);
                 }
                 else{
                     printf("Wait for the book to be returned.\n");
@@ -330,7 +340,7 @@ book* loan_book(loan_history** h, book* b, char name[], char address[], int phon
         else{
             if(temp->available==true){
                 temp->available=false;
-                add_history(&(*h), temp, p);
+                add_history(&(*h), temp, p, today);
             }
             else{
                 printf("The book is unavailable, please wait for your turn.\n");
@@ -394,21 +404,25 @@ book* start(book* b, loan_history** h){
         b=add_book(b, titles[i], authors[i]);
     }
 
-    temp=search_book(b, "Dog Nigga", "DH Animations");
-    temp->available=false;
-    temp=search_book(b, "Jojo's Bizarre Adventures", "Araki");
-    temp->available=false;
+    date today1;
+    today1.d = 4;
+    today1.m = 2;
+    today1.y = 2025;
+    date today2;
+    today2.d = 31;
+    today2.m = 1;
+    today2.y= 2025;
 
     for(int i=0; i<5; i++){
-        b=loan_book(&(*h), b, names[i], addresses[i], phone_numbers[i], "Dog Nigga", "DH Animations");
-        b=loan_book(&(*h), b, names[i], addresses[5+i], phone_numbers[5+i], "Jojo's Bizarre Adventures", "Araki");
+        b=loan_book(&(*h), b, names[i], addresses[i], phone_numbers[i], "Dog Nigga", "DH Animations", today1);
+        b=loan_book(&(*h), b, names[i], addresses[5+i], phone_numbers[5+i], "Jojo's Bizarre Adventures", "Araki", today2);
     }
 
     return b;
 };
 
 int main(){
-    book* b=NULL;
+     book* b=NULL;
     book* temp_book=NULL;
     loan_history* h=NULL;
 
@@ -417,6 +431,7 @@ int main(){
     int key=-1;
 
     char temp1[30], temp2[30], temp3[30], temp4[30];
+    date today;
     int x;
 
     while(key!=0){
@@ -442,7 +457,7 @@ int main(){
             clear_input_buffer();
 
             b=add_book(b, temp1, temp2);
-            
+
             break;
 
         case 2:
@@ -456,7 +471,7 @@ int main(){
             clear_input_buffer();
 
             b=delete_book(b, temp1, temp2);
-            
+
             break;
 
         case 3:
@@ -479,8 +494,19 @@ int main(){
             printf("phone number: ");
             scanf("%d", &x);
 
-            b=loan_book(&h, b, temp3, temp4, x, temp1, temp2);
-            
+            printf("Please enter a date in the DD/MM/YYYY format: \n");
+            printf("day: ");
+            scanf("%d", &today.d);
+            clear_input_buffer();
+            printf("month: ");
+            scanf("%d", &today.m);
+            clear_input_buffer();
+            printf("year: ");
+            scanf("%d", &today.y);
+            clear_input_buffer();
+
+            b=loan_book(&h, b, temp3, temp4, x, temp1, temp2, today);
+
             break;
 
         case 4:
@@ -494,7 +520,7 @@ int main(){
             clear_input_buffer();
 
             b=return_book(b, temp1, temp2);
-            
+
             break;
 
         case 5:
@@ -512,7 +538,7 @@ int main(){
             if(temp_book!=NULL){
                 display_book(temp_book);
             }
-            
+
             break;
 
         case 6:
@@ -530,23 +556,7 @@ int main(){
             if(temp_book!=NULL){
                 search_book_in_history(h, temp_book);
             }
-            
-            break;
 
-        case 7:
-
-            display_library(b);
-            
-            break;
-
-        case 8:
-
-            display_all_history(h);
-            
-            break;
-        
-        default:
-            printf("Invalid command.\n");
             break;
         }
     }

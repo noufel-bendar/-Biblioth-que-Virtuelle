@@ -9,6 +9,11 @@ struct person;
 struct book;
 struct queue;
 struct loan_history;
+struct date;
+
+typedef struct date{
+    int  d, m, y;
+}date;
 
 typedef struct person{
     char name[30];
@@ -36,9 +41,23 @@ typedef struct loan_history{
     int phone_number;
     char title[30];
     char author[30];
-    char date[10];
+    struct date today;
     struct loan_history* next;
 }loan_history;
+
+// date fucntions
+
+struct date setdate(struct date today, int d, int m, int y){
+    today.d = d;
+    today.m = m;
+    today.y = y;
+
+    return today;
+};
+
+void display_date(struct date today){
+    printf("%d/%d/%d\n\n", today.d, today.m, today.y);
+};
 
 // need this shit to clear the input buffer or else scanf will skip lines
 
@@ -63,28 +82,22 @@ void display_person(person* p){
 
 // history functions
 
-loan_history* add_history(loan_history** h, book* b, person* p){
+loan_history* add_history(loan_history** h, book* b, person* p, date today){
     loan_history* temp=malloc(sizeof(loan_history));
-
-    char date[10];
-
-    printf("Please enter a date in the DD/MM/YYYY format: \n");
-    scanf("%10s", date);
-
-    clear_input_buffer();
 
     strcpy(temp->name, p->name);
     strcpy(temp->address, p->address);
     strcpy(temp->title, b->title);
     strcpy(temp->author, b->author);
-    strcpy(temp->date, date);
     temp->phone_number=p->phone_number;
+    temp->today = today;
     temp->next=(*h);
     (*h)=temp;
 };//no need to use double pointers here since you are returning the pointer
 
 void display_history(loan_history* h){
-    printf("Peron Info:\n-Name: %s\n-Address: %s\n-Phone Number: %d\nBook Info:\n-Title: %s\n-Author: %s\nLoan Date: %s\n\n", h->name, h->address, h->phone_number, h->title, h->author, h->date);
+    printf("Peron Info:\n-Name: %s\n-Address: %s\n-Phone Number: %d\nBook Info:\n-Title: %s\n-Author: %s\n", h->name, h->address, h->phone_number, h->title, h->author);
+    display_date(h->today);
 };
 
 void search_book_in_history(loan_history* h, book* b){
@@ -149,13 +162,13 @@ void enqueue(queue* q, char name[], char address[], int phone){
     }
 };
 
-book* dequeue(book* b, loan_history** h){
+book* dequeue(book* b, loan_history** h, date today){
     if(b->l.head==NULL){
         printf("The queue is already empty.\n");
         return b;
     }
 
-    add_history(&(*h), b, b->l.head);
+    add_history(&(*h), b, b->l.head, today);
 
     person* temp=b->l.head;
 
@@ -253,7 +266,7 @@ book* delete_book(book* b, char title[], char author[]){
     return b;
 };
 
-book* loan_book(loan_history** h, book* b, char name[], char address[], int phone, char title[], char author[]){
+book* loan_book(loan_history** h, book* b, char name[], char address[], int phone, char title[], char author[], date today){
     book* temp=search_book(b, title, author);
     person* p=malloc(sizeof(person));
 
@@ -267,7 +280,7 @@ book* loan_book(loan_history** h, book* b, char name[], char address[], int phon
             if(compare_person(temp->l.head, p)){
                 if(temp->available==true){
                     temp->available=false;
-                    dequeue(temp, &(*h));
+                    dequeue(temp, &(*h), today);
                 }
                 else{
                     printf("Wait for the book to be returned.\n");
@@ -286,12 +299,12 @@ book* loan_book(loan_history** h, book* b, char name[], char address[], int phon
         else{
             if(temp->available==true){
                 temp->available=false;
-                add_history(&(*h), temp, p);
+                add_history(&(*h), temp, p, today);
             }
             else{
                 printf("The book is unavailable, please wait for your turn.\n");
                 enqueue(&temp->l, name, address, phone);
-                
+
             }
         }
     }

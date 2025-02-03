@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/pc/Desktop/biblioteque vbirtuelle/-Bibliothque-Virtuelle/main.c" "CMakeFiles/projet_algo.dir/main.c.obj" "gcc" "CMakeFiles/projet_algo.dir/main.c.obj.d"
+  "C:/Users/iftra/OneDrive/Desktop/github/-Bibliothque-Virtuelle/main.c" "CMakeFiles/projet_algo.dir/main.c.obj" "gcc" "CMakeFiles/projet_algo.dir/main.c.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
